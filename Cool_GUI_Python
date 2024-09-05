@@ -1,0 +1,114 @@
+import customtkinter as ctk  # Für GUI
+import webbrowser  # Zum Öffnen von Webseiten
+from win10toast import ToastNotifier  # Für Windows Toast-Benachrichtigungen
+import os  # Zum Ausführen von Systembefehlen
+import time  # Für zeitbezogene Funktionen
+
+# Initialisierung des Toast-Notifiers
+toaster = ToastNotifier()
+
+# CustomTkinter Style-Einstellungen
+ctk.set_appearance_mode("dark")  # Themes: "dark", "light"
+ctk.set_default_color_theme("blue")  # Farbthema: "blue", "green", "dark-blue"
+
+# Hauptfenster
+root = ctk.CTk()
+root.title("Complex CustomTkinter GUI")
+root.geometry("600x500")  # Fenstergröße
+
+# Funktion zum Senden einer Toast-Nachricht
+def send_toast():
+    message = toast_entry.get()  # Text aus dem Eingabefeld holen
+    toaster.show_toast("Notification", message, duration=5)  # Toast anzeigen
+
+# Funktion zum Öffnen einer Webseite
+def open_website():
+    url = url_entry.get()  # URL aus dem Eingabefeld holen
+    if url:
+        webbrowser.open(url)  # Webseite im Standardbrowser öffnen
+
+# Funktion zum Senden einer Nachricht in der GUI
+def send_message():
+    msg = message_entry.get()  # Text aus dem Eingabefeld holen
+    if msg:
+        message_display.insert(ctk.END, f"You: {msg}\n")  # Nachricht im Nachrichtenfenster anzeigen
+        message_entry.delete(0, ctk.END)  # Eingabefeld leeren
+
+# Funktion zum Leeren des Nachrichtenfensters
+def clear_messages():
+    message_display.delete(1.0, ctk.END)
+
+# Funktion zum Bereinigen des Terminals
+def clear_terminal():
+    os.system('cls' if os.name == 'nt' else 'clear')  # Terminal-Befehl
+
+# Funktion zum Starten eines Countdown-Timers
+def start_timer():
+    try:
+        seconds = int(timer_entry.get())
+        for i in range(seconds, 0, -1):
+            timer_label.config(text=f"Time remaining: {i} sec")
+            root.update()  # GUI aktualisieren
+            time.sleep(1)
+        timer_label.config(text="Time is up!")
+    except ValueError:
+        timer_label.config(text="Invalid input!")
+
+# Frames zur besseren Anordnung der GUI-Elemente
+frame_left = ctk.CTkFrame(root)
+frame_left.pack(side="left", fill="y", padx=20, pady=20)
+
+frame_right = ctk.CTkFrame(root)
+frame_right.pack(side="right", fill="both", expand=True, padx=20, pady=20)
+
+# Widgets im linken Frame (Buttons)
+label_left = ctk.CTkLabel(frame_left, text="Actions", font=("Arial", 18))
+label_left.pack(pady=10)
+
+toast_button = ctk.CTkButton(frame_left, text="Send Toast", command=send_toast)
+toast_button.pack(pady=5)
+
+open_website_button = ctk.CTkButton(frame_left, text="Open Website", command=open_website)
+open_website_button.pack(pady=5)
+
+clear_terminal_button = ctk.CTkButton(frame_left, text="Clear Terminal", command=clear_terminal)
+clear_terminal_button.pack(pady=5)
+
+clear_messages_button = ctk.CTkButton(frame_left, text="Clear Messages", command=clear_messages)
+clear_messages_button.pack(pady=5)
+
+timer_button = ctk.CTkButton(frame_left, text="Start Timer", command=start_timer)
+timer_button.pack(pady=5)
+
+# Widgets im rechten Frame (Eingabefelder und Anzeige)
+label_right = ctk.CTkLabel(frame_right, text="Communications", font=("Arial", 18))
+label_right.pack(pady=10)
+
+# Eingabefeld für Toast-Nachrichten
+toast_entry = ctk.CTkEntry(frame_right, placeholder_text="Enter Toast Message")
+toast_entry.pack(pady=5)
+
+# Eingabefeld für Webseiten-URL
+url_entry = ctk.CTkEntry(frame_right, placeholder_text="Enter URL to Open")
+url_entry.pack(pady=5)
+
+# Nachrichtenanzeige (wie ein Chat-Fenster)
+message_display = ctk.CTkTextbox(frame_right, width=400, height=150)
+message_display.pack(pady=5)
+
+# Eingabefeld für Nachrichten
+message_entry = ctk.CTkEntry(frame_right, placeholder_text="Enter your message")
+message_entry.pack(pady=5)
+
+send_message_button = ctk.CTkButton(frame_right, text="Send Message", command=send_message)
+send_message_button.pack(pady=5)
+
+# Timer-Funktion
+timer_label = ctk.CTkLabel(frame_right, text="Set a Timer (in seconds):", font=("Arial", 14))
+timer_label.pack(pady=5)
+
+timer_entry = ctk.CTkEntry(frame_right, placeholder_text="Enter seconds")
+timer_entry.pack(pady=5)
+
+# Start der GUI
+root.mainloop()
