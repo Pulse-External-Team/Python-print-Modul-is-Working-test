@@ -1,0 +1,18 @@
+{
+  "keybinds": {
+    "Toggle_bot": "F",
+    "FOV": 120.00,
+    "Jump": "Space",
+    "Crouch": "C",
+    "Sprint": "Shift",
+    "Reload": "R",
+    "Interact": "E",
+    "Open_inventory": "I",
+    "Pause_game": "Escape",
+    "Toggle_map": "M",
+    "Quick_save": "F5",
+    "Fire": "Mouse1",
+    "Aim": "Mouse2",
+    "Switch_weapon": "Q"
+  }
+}
